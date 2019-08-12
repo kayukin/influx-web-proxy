@@ -17,6 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <unirest.version>2.3.14</unirest.version>
+        <j-serial-comm.version>2.5.1</j-serial-comm.version>
     </properties>
 
     <dependencies>
@@ -35,6 +36,13 @@
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
             <version>${unirest.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fazecast/jSerialComm -->
+        <dependency>
+            <groupId>com.fazecast</groupId>
+            <artifactId>jSerialComm</artifactId>
+            <version>${j-serial-comm.version}</version>
         </dependency>
     </dependencies>
 
