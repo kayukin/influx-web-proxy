@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
+        <unirest.version>2.3.14</unirest.version>
     </properties>
 
     <dependencies>
@@ -28,6 +29,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-java</artifactId>
+            <version>${unirest.version}</version>
         </dependency>
     </dependencies>
 
