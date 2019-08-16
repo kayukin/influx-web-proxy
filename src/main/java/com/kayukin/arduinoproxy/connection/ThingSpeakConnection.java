@@ -5,9 +5,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
-@Service
 public class ThingSpeakConnection {
     private static final Logger log = LoggerFactory.getLogger(ThingSpeakConnection.class);
     private static final String API_URL = "https://api.thingspeak.com/update";
