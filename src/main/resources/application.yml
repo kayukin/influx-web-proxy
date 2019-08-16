@@ -1,1 +1,2 @@
-serialPort: /dev/ttyUSB0
+serialPort: /dev/pts/1
+pollRate: 3s
