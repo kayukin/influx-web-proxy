@@ -8,11 +8,17 @@ import org.slf4j.LoggerFactory;
 
 public class ThingSpeakConnection {
     private static final Logger log = LoggerFactory.getLogger(ThingSpeakConnection.class);
-    private static final String API_URL = "https://api.thingspeak.com/update";
+    private final String apiUrl;
+    private final String key;
+
+    public ThingSpeakConnection(String apiUrl, String key) {
+        this.apiUrl = apiUrl;
+        this.key = key;
+    }
 
     public void sendSensorsData(SensorsData sensorsData) {
-        HttpResponse<String> response = Unirest.get(API_URL)
-                .queryString("api_key", "EQEGDGU0V5OB5IAY")
+        HttpResponse<String> response = Unirest.get(apiUrl)
+                .queryString("api_key", key)
                 .queryString("field1", sensorsData.getTemperature())
                 .queryString("field2", sensorsData.getHumidity())
                 .asString();

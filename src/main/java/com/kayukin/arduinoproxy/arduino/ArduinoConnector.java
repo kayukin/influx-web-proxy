@@ -6,6 +6,7 @@ import com.kayukin.arduinoproxy.model.SensorsData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 public class ArduinoConnector {
@@ -13,8 +14,8 @@ public class ArduinoConnector {
     private final Arduino arduino;
     private final ObjectMapper objectMapper;
 
-    public ArduinoConnector(String portDescriptor, ObjectMapper objectMapper) {
-        arduino = new Arduino(portDescriptor, 9600);
+    public ArduinoConnector(String portDescriptor, int baudRate, ObjectMapper objectMapper) {
+        arduino = new Arduino(portDescriptor, baudRate);
         this.objectMapper = objectMapper;
         arduino.openConnection();
     }
@@ -24,9 +25,14 @@ public class ArduinoConnector {
         arduino.closeConnection();
     }
 
-    public SensorsData readSensorsData() {
+    public Optional<SensorsData> readSensorsData() {
         arduino.serialWrite(READ_COMMAND);
         String rawData = arduino.serialRead();
+        return Optional.ofNullable(rawData)
+                .map(this::parseRawData);
+    }
+
+    private SensorsData parseRawData(String rawData) {
         try {
             return objectMapper.readValue(rawData, SensorsData.class);
         } catch (IOException e) {
