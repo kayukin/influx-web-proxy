@@ -3,13 +3,12 @@ package com.kayukin.arduinoproxy.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kayukin.arduinoproxy.arduino.ArduinoConnector;
 import com.kayukin.arduinoproxy.connection.ThingSpeakConnection;
+import com.kayukin.arduinoproxy.property.ArduinoProperties;
+import com.kayukin.arduinoproxy.property.ThingSpeakProperties;
 import com.kayukin.arduinoproxy.task.PollSensorsTask;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
-
-import java.time.Duration;
 
 @Configuration
 public class AppConfig {
@@ -17,19 +16,19 @@ public class AppConfig {
     public PollSensorsTask pollSensorsTask(ArduinoConnector arduinoConnector,
                                            ThingSpeakConnection thingSpeakConnection,
                                            TaskScheduler taskScheduler,
-                                           @Value("${pollRate}") Duration duration) {
+                                           ArduinoProperties arduinoProperties) {
         PollSensorsTask pollSensorsTask = new PollSensorsTask(thingSpeakConnection, arduinoConnector);
-        taskScheduler.scheduleWithFixedDelay(pollSensorsTask::run, duration);
+        taskScheduler.scheduleWithFixedDelay(pollSensorsTask::run, arduinoProperties.getPollRate());
         return pollSensorsTask;
     }
 
     @Bean(destroyMethod = "close")
-    public ArduinoConnector arduinoConnector(@Value("${serialPort}") String portDescriptor, ObjectMapper objectMapper) {
-        return new ArduinoConnector(portDescriptor, objectMapper);
+    public ArduinoConnector arduinoConnector(ArduinoProperties arduinoProperties, ObjectMapper objectMapper) {
+        return new ArduinoConnector(arduinoProperties.getSerialPort(), arduinoProperties.getBaudRate(), objectMapper);
     }
 
     @Bean
-    public ThingSpeakConnection thingSpeakConnection() {
-        return new ThingSpeakConnection();
+    public ThingSpeakConnection thingSpeakConnection(ThingSpeakProperties thingSpeakProperties) {
+        return new ThingSpeakConnection(thingSpeakProperties.getApiUrl(), thingSpeakProperties.getKey());
     }
 }

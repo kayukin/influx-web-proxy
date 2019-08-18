@@ -2,8 +2,9 @@ package com.kayukin.arduinoproxy.task;
 
 import com.kayukin.arduinoproxy.arduino.ArduinoConnector;
 import com.kayukin.arduinoproxy.connection.ThingSpeakConnection;
-import com.kayukin.arduinoproxy.model.SensorsData;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PollSensorsTask {
     private final ThingSpeakConnection thingSpeakConnection;
     private final ArduinoConnector arduinoConnector;
@@ -14,7 +15,7 @@ public class PollSensorsTask {
     }
 
     public void run() {
-        SensorsData sensorsData = arduinoConnector.readSensorsData();
-        thingSpeakConnection.sendSensorsData(sensorsData);
+        arduinoConnector.readSensorsData()
+                .ifPresentOrElse(thingSpeakConnection::sendSensorsData, () -> log.warn("Empty arduino response"));
     }
 }

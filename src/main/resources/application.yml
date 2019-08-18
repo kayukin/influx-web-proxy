@@ -1,2 +1,7 @@
-serialPort: /dev/pts/1
-pollRate: 3s
+arduino:
+  baud-rate: 9600
+  poll-rate: 3s
+  serial-port: /dev/pts/1
+thing-speak:
+  api-url: https://api.thingspeak.com/update
+  key: EQEGDGU0V5OB5IAY
