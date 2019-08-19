@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SensorsData {
-    private Integer humidity;
-    private Integer temperature;
+    private Double humidity;
+    private Double temperature;
 }

@@ -14,15 +14,10 @@ public class ArduinoConnector {
     private final Arduino arduino;
     private final ObjectMapper objectMapper;
 
-    public ArduinoConnector(String portDescriptor, int baudRate, ObjectMapper objectMapper) {
-        arduino = new Arduino(portDescriptor, baudRate);
+    public ArduinoConnector(Arduino arduino, ObjectMapper objectMapper) {
+        this.arduino = arduino;
         this.objectMapper = objectMapper;
         arduino.openConnection();
-    }
-
-    public void close() {
-        log.info("Closing arduino connection");
-        arduino.closeConnection();
     }
 
     public Optional<SensorsData> readSensorsData() {

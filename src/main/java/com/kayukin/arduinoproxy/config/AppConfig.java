@@ -1,6 +1,7 @@
 package com.kayukin.arduinoproxy.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kayukin.arduinoproxy.arduino.Arduino;
 import com.kayukin.arduinoproxy.arduino.ArduinoConnector;
 import com.kayukin.arduinoproxy.connection.ThingSpeakConnection;
 import com.kayukin.arduinoproxy.property.ArduinoProperties;
@@ -22,9 +23,14 @@ public class AppConfig {
         return pollSensorsTask;
     }
 
-    @Bean(destroyMethod = "close")
-    public ArduinoConnector arduinoConnector(ArduinoProperties arduinoProperties, ObjectMapper objectMapper) {
-        return new ArduinoConnector(arduinoProperties.getSerialPort(), arduinoProperties.getBaudRate(), objectMapper);
+    @Bean
+    public ArduinoConnector arduinoConnector(Arduino arduino, ObjectMapper objectMapper) {
+        return new ArduinoConnector(arduino, objectMapper);
+    }
+
+    @Bean(destroyMethod = "closeConnection")
+    public Arduino arduino(ArduinoProperties arduinoProperties) {
+        return new Arduino(arduinoProperties.getSerialPort(), arduinoProperties.getBaudRate());
     }
 
     @Bean
