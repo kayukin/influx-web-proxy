@@ -8,7 +8,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ArduinoConnectorTest {
@@ -24,8 +23,6 @@ public class ArduinoConnectorTest {
 
     @Test
     public void testCorrectResponse() {
-        when(arduino.serialRead()).thenReturn("{\"humidity\": 55.5,\"temperature\": 25.2}");
-
         underTest.pollSensors();
 
         verify(arduino).serialWrite(any());
