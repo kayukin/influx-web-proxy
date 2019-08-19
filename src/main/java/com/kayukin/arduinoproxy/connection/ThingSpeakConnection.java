@@ -6,7 +6,7 @@ import kong.unirest.Unirest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ThingSpeakConnection {
+public class ThingSpeakConnection implements SensorsDataConsumer {
     private static final Logger log = LoggerFactory.getLogger(ThingSpeakConnection.class);
     private final String apiUrl;
     private final String key;
@@ -16,7 +16,8 @@ public class ThingSpeakConnection {
         this.key = key;
     }
 
-    public void sendSensorsData(SensorsData sensorsData) {
+    @Override
+    public void accept(SensorsData sensorsData) {
         HttpResponse<String> response = Unirest.get(apiUrl)
                 .queryString("api_key", key)
                 .queryString("field1", sensorsData.getTemperature())
