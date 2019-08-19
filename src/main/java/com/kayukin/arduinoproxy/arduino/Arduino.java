@@ -1,6 +1,7 @@
 package com.kayukin.arduinoproxy.arduino;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPortDataListener;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -38,6 +39,9 @@ public class Arduino {
         try (PrintWriter writer = new PrintWriter(serialPort.getOutputStream())) {
             writer.print(s);
         }
+    }
 
+    public void registerEventListener(SerialPortDataListener listener) {
+        serialPort.addDataListener(listener);
     }
 }

@@ -1,9 +1,9 @@
 package com.kayukin.arduinoproxy.exception;
 
-public class ReadSensorsException extends RuntimeException {
+public class ParseSensorsException extends RuntimeException {
     private static final long serialVersionUID = -5867366265492972298L;
 
-    public ReadSensorsException(Throwable cause) {
+    public ParseSensorsException(Throwable cause) {
         super(cause);
     }
 }
