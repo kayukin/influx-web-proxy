@@ -6,12 +6,16 @@ import com.kayukin.arduinoproxy.arduino.ArduinoConnector;
 import com.kayukin.arduinoproxy.arduino.listener.ArduinoListener;
 import com.kayukin.arduinoproxy.arduino.parser.JsonSensorsDataParser;
 import com.kayukin.arduinoproxy.arduino.parser.SensorsDataParser;
+import com.kayukin.arduinoproxy.connection.InfluxConnection;
 import com.kayukin.arduinoproxy.connection.SensorsDataConsumer;
 import com.kayukin.arduinoproxy.connection.ThingSpeakConnection;
 import com.kayukin.arduinoproxy.property.ArduinoProperties;
 import com.kayukin.arduinoproxy.property.ThingSpeakProperties;
 import com.kayukin.arduinoproxy.task.PollSensorsTask;
+import org.influxdb.InfluxDB;
 import org.springframework.beans.factory.BeanInitializationException;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -55,7 +59,15 @@ public class AppConfig {
     }
 
     @Bean
+    @ConditionalOnProperty("thing-speak")
     public ThingSpeakConnection thingSpeakConnection(ThingSpeakProperties thingSpeakProperties) {
         return new ThingSpeakConnection(thingSpeakProperties.getApiUrl(), thingSpeakProperties.getKey());
+    }
+
+    @Bean
+    @ConditionalOnBean(InfluxDB.class)
+    public InfluxConnection influxConnection(InfluxDB influxDB) {
+        influxDB.setDatabase("sensors");
+        return new InfluxConnection(influxDB);
     }
 }

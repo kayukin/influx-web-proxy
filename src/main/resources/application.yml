@@ -5,3 +5,7 @@ arduino:
 thing-speak:
   api-url: https://api.thingspeak.com/update
   key: EQEGDGU0V5OB5IAY
+logging.level.com.kayukin.arduinoproxy: debug
+spring:
+  influx:
+    url: http://localhost:8086
