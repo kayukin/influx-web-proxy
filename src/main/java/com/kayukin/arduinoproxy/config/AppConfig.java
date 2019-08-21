@@ -1,7 +1,7 @@
 package com.kayukin.arduinoproxy.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kayukin.arduinoproxy.arduino.Arduino;
+import com.fazecast.jSerialComm.SerialPort;
 import com.kayukin.arduinoproxy.arduino.ArduinoConnector;
 import com.kayukin.arduinoproxy.arduino.listener.ArduinoListener;
 import com.kayukin.arduinoproxy.arduino.parser.JsonSensorsDataParser;
@@ -34,8 +34,8 @@ public class AppConfig {
     }
 
     @Bean
-    public ArduinoConnector arduinoConnector(Arduino arduino) {
-        return new ArduinoConnector(arduino);
+    public ArduinoConnector arduinoConnector(SerialPort serialPort) {
+        return new ArduinoConnector(serialPort);
     }
 
     @Bean
@@ -48,14 +48,16 @@ public class AppConfig {
         return new JsonSensorsDataParser(objectMapper);
     }
 
-    @Bean(destroyMethod = "closeConnection")
-    public Arduino arduino(ArduinoProperties arduinoProperties, ArduinoListener arduinoListener) {
-        Arduino arduino = new Arduino(arduinoProperties.getSerialPort(), arduinoProperties.getBaudRate());
-        if (!arduino.openConnection()) {
+    @Bean(destroyMethod = "closePort")
+    public SerialPort serialPort(ArduinoProperties arduinoProperties, ArduinoListener arduinoListener) {
+        SerialPort serialPort = SerialPort.getCommPort(arduinoProperties.getSerialPort());
+        serialPort.setBaudRate(arduinoProperties.getBaudRate());
+        serialPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+        if (!serialPort.openPort()) {
             throw new BeanInitializationException("Can't connect to " + arduinoProperties.getSerialPort());
         }
-        arduino.registerEventListener(arduinoListener);
-        return arduino;
+        serialPort.addDataListener(arduinoListener);
+        return serialPort;
     }
 
     @Bean
