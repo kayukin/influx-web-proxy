@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ArduinoListenerIntegrationTest {
+public class ArduinoListenerIT {
     @Autowired
     private ArduinoListener underTest;
 
