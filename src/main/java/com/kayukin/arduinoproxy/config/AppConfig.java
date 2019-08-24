@@ -67,7 +67,6 @@ public class AppConfig {
     }
 
     @Bean
-    @ConditionalOnBean(InfluxDB.class)
     public InfluxConnection influxConnection(InfluxDB influxDB) {
         influxDB.setDatabase("sensors");
         return new InfluxConnection(influxDB);
