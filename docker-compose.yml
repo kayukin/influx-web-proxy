@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  influxdb:
+    image: influxdb:1.7.8
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - ./data/influxdb:/var/lib/influxdb
+    restart: always
+
+  grafana:
+    image: grafana/grafana:6.3.6
+    container_name: grafana
+    depends_on:
+      - influxdb
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    restart: always
+    environment:
+      - GF_SERVER_ROOT_URL=https://kayukin.systems/grafana
+      - GF_SERVER_DOMAIN=kayukin.systems
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    user: "472"
+    # mkdir -p data/grafana; chown -R 472:472 data/grafana
+
+  web:
+    build: .
+    container_name: influx-proxy
+    depends_on:
+      - influxdb
+    ports:
+      - 8080:8080
+    restart: always

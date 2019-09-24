@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sensors")
+@RequestMapping("/api/sensors")
 public class DataController {
     private final InfluxConnection influxConnection;
 
