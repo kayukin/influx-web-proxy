@@ -1,4 +1,4 @@
-package com.kayukin.arduinoproxy.model;
+package com.kayukin.influxproxy.model;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;

@@ -1,6 +1,6 @@
-package com.kayukin.arduinoproxy.connection;
+package com.kayukin.influxproxy.connection;
 
-import com.kayukin.arduinoproxy.model.SensorsData;
+import com.kayukin.influxproxy.model.SensorsData;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
 import org.junit.Before;
